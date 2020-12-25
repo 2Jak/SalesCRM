@@ -1,0 +1,119 @@
+﻿@page "{leadId}"
+@model SalesCRM.Pages.Leads.LeadModel
+@{
+    ViewData["Title"] = Model.Lead.Name;
+}
+
+<div class="container">
+    <div class="alert alert-info" style="direction:rtl;text-align:right;margin:10px;">
+        <form method="post">
+            <input type="hidden" asp-for="Lead.ID" />
+            <input type="hidden" asp-for="Lead.FreeTexts" />
+            <input type="hidden" asp-for="Lead.LastUpdate" />
+            <div class="form-inline row alert alert-light">
+                <label for="name" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["Name"]</label>
+                <div class="col-sm-10">
+                    <input id="name" type="text" asp-for="Lead.Name" class="form-control" />
+                </div>
+                <span asp-validation-for="Lead.Name" class="text alert-danger"></span>
+            </div>
+            <div class="form-inline row alert alert-light">
+                <label for="address" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["Address"]</label><br />
+                <div class="col-sm-10">
+                    <input id="address" type="text" asp-for="Lead.Address" class="form-control" />
+                </div>
+                <span asp-validation-for="Lead.Address" class="text alert-danger"></span>
+            </div>
+            <div class="form-inline row alert alert-light">
+                <label for="phoneNumber" class="col-sm-2 col-form-label">מספר @Utilities.Localization.EnglishHebrew["Phonenumber"]</label>
+                <div class="col-sm-10">
+                    <input id="phoneNumber" type="tel" asp-for="Lead.Phonenumber" class="form-control" />
+                </div>
+                <span asp-validation-for="Lead.Phonenumber" class="text alert-danger"></span>
+            </div>
+            <div class="form-inline row alert alert-light">
+                <label for="secondrayPhoneNumber" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["SecondaryPhonenumber"]</label>
+                <div class="col-sm-10">
+                    <input id="secondrayPhoneNumber" type="tel" asp-for="Lead.SecondaryPhonenumber" class="form-control" />
+                </div>
+                <span asp-validation-for="Lead.SecondaryPhonenumber" class="text alert-danger"></span>
+            </div>
+            <div class="form-inline row alert alert-light">
+                <label for="email" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["Email"]</label>
+                <div class="col-sm-10">
+                    <input id="email" type="email" asp-for="Lead.Email" class="form-control" />
+                </div>
+                <span asp-validation-for="Lead.Email" class="text alert-danger"></span>
+            </div>
+            <div class="form-inline row alert alert-light">
+                <label for="gender" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["Male"]</label>
+                <div class="col-sm-10">
+                    <select id="gender" asp-for="Lead.Male" class="custom-select">
+                        <option value="null">לא ידוע</option>
+                        <option value="true">זכר</option>
+                        <option value="false">נקבה</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-inline row alert alert-light">
+                <label for="desiredCourse" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["DesiredCourse"]</label>
+                <div class="col-sm-10">
+                    <select id="desiredCourse" asp-for="Lead.DesiredCourse" asp-items="Model.Courses" class="custom-select"></select>
+                </div>
+            </div>
+            <div class="form-inline row alert alert-light">
+                <label for="status" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["Status"]</label>
+                <div class="col-sm-10">
+                    <select id="status" asp-for="Lead.Status" asp-items="Model.Statuses" class="custom-select"></select>
+                </div>
+            </div>
+            <div class="form-inline row alert alert-light">
+                <label for="safetyCheck" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["SafetyCheck"]</label>
+                <div class="col-sm-10">
+                    <input id="safetyCheck" type="checkbox" asp-for="Lead.SafetyCheck" />
+                </div>
+                <label for="paidRegistrationFee" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["PaidRegistrationFee"]</label>
+                <div class="col-sm-10">
+                    <input id="paidRegistrationFee" type="checkbox" asp-for="Lead.PaidRegistrationFee" />
+                </div>
+                <label for="signedContract" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["SignedContract"]</label>
+                <div class="col-sm-10">
+                    <input id="signedContract" type="checkbox" asp-for="Lead.SignedContract" />
+                </div>
+                <label for="assingedToWork" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["AssignedToWork"]</label>
+                <div class="col-sm-10">
+                    <input id="assingedToWork" type="checkbox" asp-for="Lead.AssignedToWork" />
+                </div>
+                <label for="paymentTransfered" class="col-sm-2 col-form-label">@Utilities.Localization.EnglishHebrew["PaymentTransfered"]</label>
+                <div class="col-sm-10">
+                    <input id="paymentTransfered" type="checkbox" asp-for="Lead.PaymentTransfered" />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-info">שמור שינויים</button>
+        </form>
+        <p class="alert-success">Last Updated: @Model.Lead.LastUpdate.ToString("dd/MM/yy HH:mm")</p>
+    </div>
+    <div>
+        <a asp-page="" asp-route-leadId="@Model.Lead.ID" asp-route-addFreeText="true" class="btn btn-info text-white">הוסף טקסט חופשי</a>
+    </div>
+    <div class="alert alert-info" style="direction:rtl;text-align:right;margin:10px;">
+        @foreach (var freeText in Model.Lead.FreeTexts)
+        {
+            <div class="card">
+                <div class="card-body input-group">
+                    
+                    <form asp-page="" asp-page-handler="UpdateFreeText">
+                        <input type="hidden" name="textId" value="@freeText.ID"/>
+                        <textarea name="text" class="form-control">@freeText.Text</textarea>
+                        <button type="submit" class="btn btn-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-square" viewBox="0 0 16 16">
+                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                            </svg>
+                        </button>
+                    </form>                    
+                </div>
+            </div>
+        }
+    </div>
+</div>

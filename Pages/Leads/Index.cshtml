@@ -1,0 +1,61 @@
+﻿@page
+@using Data.Models
+@model SalesCRM.Pages.Leads.IndexModel
+@{ 
+    ViewData["Title"] = "Leads";
+}
+
+<div>
+    <div class="alert alert-info" style="margin: 10px 0px 10px 0px;">
+        <form asp-page="" method="get">
+            <div class="form-actions no-color">
+                <input id="searchWord" type="text" name="searchWord" value="@Model.SearchState"/>
+                <label for="searchWord">הכנס טקסט לחיפוש</label>
+                <select id="searchProperty" name="searchProperty" asp-items="@Model.LeadProperties"></select>
+                <label for="searchProperty">בחר בשדה לחיפוש</label>
+                <input type="submit" class="btn btn-info" value="חפש" />
+                <a class="btn btn-danger" asp-page="">נקה</a>
+                <a class="btn btn-success text-white" asp-page="Add">הוסף ליד חדש</a>
+            </div>
+        </form>
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <table class="table table-bordered table-info">
+            <thead>
+                <tr>
+                    @foreach (string propertyName in Model.SortStateForColumn.Keys)
+                    {
+                        <th>
+                            <a asp-page="" asp-route-sortBy="@propertyName" asp-route-searchWord="@Model.SearchState" asp-route-searchProperty="@Model.SearchProperty">@Utilities.Localization.EnglishHebrew[propertyName]</a>
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var lead in Model.Leads)
+                {
+                    <tr>
+                        @foreach (string propertyName in Model.SortStateForColumn.Keys)
+                        {
+                         <td>
+                            @if (propertyName == "Male")
+                            {
+                                bool? maleValue = (bool?)typeof(Lead).GetProperty(propertyName).GetValue(lead);
+                                @Utilities.Localization.GetGenderStringForBool(maleValue);
+                            }
+                            else
+                            {
+                                @typeof(Lead).GetProperty(propertyName).GetValue(lead);
+                            }
+                        </td>
+                        }
+                        <td>
+                            <a asp-page="Lead" asp-route-leadId="@lead.ID" class="btn btn-info">פרטים נוספים</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
